@@ -1,0 +1,6 @@
+{
+  "name": "PC Tamiri ve Yapay Zeka Ajan Oluşturucu",
+  "description": "PC tamir teşhisi yapabilen, online/offline çözümler sunan ve özel yapay zeka ajanları tasarlayıp test edebileceğiniz tam donanımlı platform.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
