@@ -31,16 +31,13 @@ const app = express();
 // Middleware for parsing JSON bodies
 app.use(express.json());
 
-async function startServer() {
-  const PORT = 3000;
+// API 1: Health check
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok", time: new Date().toISOString() });
+});
 
-  // API 1: Health check
-  app.get("/api/health", (req, res) => {
-    res.json({ status: "ok", time: new Date().toISOString() });
-  });
-
-  // API 2: Hardware / System Diagnose Endpoint
-  app.post("/api/pc/diagnose", async (req, res) => {
+// API 2: Hardware / System Diagnose Endpoint
+app.post("/api/pc/diagnose", async (req, res) => {
     try {
       const { prompt, deviceType, errorCodes, contextHistory } = req.body;
       const ai = getGeminiClient();
@@ -184,6 +181,9 @@ Döneceğiniz JSON formatının şeması şudur:
       res.status(500).json({ error: "Yapay Zeka ajanı yanıt üretemedi", details: err.message });
     }
   });
+
+async function startServer() {
+  const PORT = 3000;
 
   // Vite development or production routing
   if (process.env.NODE_ENV !== "production") {
