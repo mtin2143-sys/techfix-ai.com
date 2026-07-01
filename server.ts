@@ -26,12 +26,13 @@ function getGeminiClient() {
   return aiInstance;
 }
 
-async function startServer() {
-  const app = express();
-  const PORT = 3000;
+const app = express();
 
-  // Middleware for parsing JSON bodies
-  app.use(express.json());
+// Middleware for parsing JSON bodies
+app.use(express.json());
+
+async function startServer() {
+  const PORT = 3000;
 
   // API 1: Health check
   app.get("/api/health", (req, res) => {
@@ -204,4 +205,8 @@ Döneceğiniz JSON formatının şeması şudur:
   });
 }
 
-startServer();
+if (!process.env.VERCEL) {
+  startServer();
+}
+
+export default app;

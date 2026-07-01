@@ -1,17 +1,26 @@
 steps:
-  # Tek adimda kaynak koddan derleyip Cloud Run'a konuslandir.
+  # 1. Dockerfile kullanarak imajı derle
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/techfix:$COMMIT_SHA', '.']
+
+  # 2. İmajı Container Registry'ye gönder (Otomatik oluşturulur)
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/techfix:$COMMIT_SHA']
+
+  # 3. Derlenen imajı Cloud Run'a konuşlandır
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'
     args:
       - 'run'
       - 'deploy'
       - 'techfix'
-      - '--source'
-      - '.'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/techfix:$COMMIT_SHA'
       - '--region'
       - 'europe-west1'
       - '--allow-unauthenticated'
 
-# Sirket hesabindaki Log yetki sinirlandirmasini asmak icin loglamayi devre disi birakiyoruz
+# Şirket hesabındaki Log yetki kısıtlamalarını aşmak veya temiz log tutmak için
 options:
   logging: 'NONE'
+
